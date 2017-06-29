@@ -8,6 +8,17 @@ function tokenForUser(user) {
   // iat is issue at time
 }
 
+exports.signin = function(req, res, next) {
+  // User has already had their email and password auth'd
+  // We just need to give them a token
+
+  // Since passport found a match
+  // --> pass user to req (from password.js)
+  // --> able to call req.user
+  res.send({ token: tokenForUser(req.user) });
+
+}
+
 exports.signup = function(req, res, next) {
   // console.log(req.body);
   const email = req.body.email;
@@ -37,7 +48,7 @@ exports.signup = function(req, res, next) {
     user.save(function(err){
       if (err) { return next(err); }
 
-    // Repond to request indicating the user was created
+    // Respond to request indicating the user was created
     // res.json(user);
       res.json({ token: tokenForUser(user) });
     });
